@@ -24,7 +24,8 @@ public class LinguagemLA
 
             CommonTokenStream tokens = new CommonTokenStream(lex);
 	        LAParser parser = new LAParser(tokens);
-	    
+            
+            parser.removeErrorListeners();
 	        MyCustomErrorListener mcel = new MyCustomErrorListener(pw);
             parser.addErrorListener(mcel);
             Token t = null;
@@ -50,6 +51,7 @@ public class LinguagemLA
                 } */
             }
             
+            //Análise Sintática após verificação Léxica
             if(!lexError){
                 parser.programa();
             }

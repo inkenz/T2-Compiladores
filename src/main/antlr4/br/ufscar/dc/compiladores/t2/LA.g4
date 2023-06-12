@@ -87,7 +87,7 @@ IGNORE:
     ( ' ' | '\t' | '\r' | '\n' ) {skip();};
 
 
-programa: declaracoes ALGORITMO corpo FIM_ALGORITMO;
+programa: declaracoes ALGORITMO corpo FIM_ALGORITMO EOF;
 declaracoes: (decl_local_global)*;
 decl_local_global: declaracao_global | declaracao_local;
 declaracao_local: DECLARE variavel
