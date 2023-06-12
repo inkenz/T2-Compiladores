@@ -21,15 +21,8 @@ public class LinguagemLA
 
             LALexer lex = new LALexer(cs);
             Boolean lexError = false;
-
-            CommonTokenStream tokens = new CommonTokenStream(lex);
-	        LAParser parser = new LAParser(tokens);
-            
-            parser.removeErrorListeners();
-	        MyCustomErrorListener mcel = new MyCustomErrorListener(pw);
-            parser.addErrorListener(mcel);
             Token t = null;
-            
+
             //Montagem do vocabulário
             while ((t = lex.nextToken()).getType() != Token.EOF) {
                 String nomeToken = LALexer.VOCABULARY.getDisplayName(t.getType());
@@ -53,10 +46,20 @@ public class LinguagemLA
             
             //Análise Sintática após verificação Léxica
             if(!lexError){
+                cs = CharStreams.fromFileName(args[0]);
+
+                lex = new LALexer(cs);
+                CommonTokenStream tokens = new CommonTokenStream(lex);
+                LAParser parser = new LAParser(tokens);
+
+                parser.removeErrorListeners();
+                MyCustomErrorListener mcel = new MyCustomErrorListener(pw);
+                parser.addErrorListener(mcel);
+
                 parser.programa();
             }
 
-            pw.println("Fim da Compilação");
+            pw.println("Fim da compilacao");
             pw.close();
 
 
