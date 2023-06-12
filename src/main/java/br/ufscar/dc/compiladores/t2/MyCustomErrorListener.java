@@ -1,11 +1,22 @@
 package br.ufscar.dc.compiladores.t2;
 
+import java.io.PrintWriter;
+import java.util.BitSet;
+
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.atn.ATNConfigSet;
+import org.antlr.v4.runtime.dfa.DFA;
+
 import org.antlr.v4.runtime.ANTLRErrorListener; // cuidado para importar a versão 4
 import org.antlr.v4.runtime.Token; // Vamos também precisar de Token
 // Outros imports vão ser necessários aqui. O NetBeans ou IntelliJ fazem isso automaticamente
 
 public class MyCustomErrorListener implements ANTLRErrorListener {
     PrintWriter pw;
+    Boolean erro = false;
+
     public MyCustomErrorListener(PrintWriter pw) {
         this.pw = pw;    
     }
@@ -30,8 +41,13 @@ public class MyCustomErrorListener implements ANTLRErrorListener {
         // Aqui vamos colocar o tratamento de erro customizado
 
         Token t = (Token) offendingSymbol;
+        String tokenText = t.getText();
 
-        pw.println("Minha mensagem customizada: Erro na linha "+line+", o token é "+t.getText());
+        if (tokenText == "<EOF>"){
+            tokenText = "EOF";
+        }
+
+        pw.println("Linha " + line + ": erro sintatico proximo a " + tokenText);
     }
 }
 

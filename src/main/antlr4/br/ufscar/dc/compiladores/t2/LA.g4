@@ -80,13 +80,14 @@ COMENTARIO:
     '{' ~('{'|'}'|'\n'|'\r'|'\t')* '}' {skip();};
 COMENTARIO_NAO_FECHADO:
     '{' ~('{'|'}'|'\n'|'\r'|'\t')*;
-
 ERRO:
     ('$' | '~' | CADEIA'}' | '}');
 
+IGNORE:
+    ( ' ' | '\t' | '\r' | '\n' ) {skip();};
 
 
-programa: declaracoes ALGORITMO corpo FIM_ALGORITMO EOF;
+programa: declaracoes ALGORITMO corpo FIM_ALGORITMO;
 declaracoes: (decl_local_global)*;
 decl_local_global: declaracao_global | declaracao_local;
 declaracao_local: DECLARE variavel

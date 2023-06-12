@@ -7,9 +7,10 @@ import java.io.FileWriter;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 
-public class LinguagemLa 
+public class LinguagemLA 
 {
     public static void main( String[] args )
     {
@@ -18,32 +19,44 @@ public class LinguagemLa
             //Recebendo argumentos com arquivos de entrada e saída
             CharStream cs = CharStreams.fromFileName(args[0]);
 
-            LA lex = new LALexer(cs);
-            CommonTokenStream tokens = new CommonTokenStream(lexer);
-	    LA parser = new AlgumaParser(tokens);
+            LALexer lex = new LALexer(cs);
+            Boolean lexError = false;
+
+            CommonTokenStream tokens = new CommonTokenStream(lex);
+	        LAParser parser = new LAParser(tokens);
 	    
-	    MyCustomErrorListener mcel = new MyCustomErrorListener(pw);
+	        MyCustomErrorListener mcel = new MyCustomErrorListener(pw);
             parser.addErrorListener(mcel);
             Token t = null;
             
-            parcer.programa();
             //Montagem do vocabulário
             while ((t = lex.nextToken()).getType() != Token.EOF) {
-                String nomeToken = LA.VOCABULARY.getDisplayName(t.getType());
+                String nomeToken = LALexer.VOCABULARY.getDisplayName(t.getType());
 
                 if(nomeToken.equals("ERRO")) {
                     pw.println("Linha "+t.getLine()+": "+t.getText()+" - simbolo nao identificado");
+                    lexError = true;
                     break;
                 } else if(nomeToken.equals("CADEIA_NAO_FECHADA")) {
                     pw.println("Linha "+t.getLine()+": cadeia literal nao fechada");
+                    lexError = true;
                     break;
                 } else if(nomeToken.equals("COMENTARIO_NAO_FECHADO")) {
                     pw.println("Linha "+t.getLine()+": comentario nao fechado");
+                    lexError = true;
                     break;
-                } else {
+                } /* else {
                     pw.println("<'" + t.getText() + "'," + nomeToken + ">");
-                }
+                } */
             }
+            
+            if(!lexError){
+                parser.programa();
+            }
+
+            pw.println("Fim da Compilação");
+            pw.close();
+
 
         } catch (IOException e) {
             e.printStackTrace();
