@@ -1,4 +1,4 @@
-# T1-Compiladores - Analisador Sintático da Linguagem LA
+# T2-Compiladores - Analisador Sintático da Linguagem LA
 
 Trabalho 2 da Disciplina de Construção de Compiladores 2023/01 UFSCar
 
